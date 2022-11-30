@@ -1,0 +1,46 @@
+menu() {
+    echo -e "——————————————————————————————————————————————————————————————————————————————————————\n"	
+    echo "Prism项目初始化。使用前注意备份已写代码！！！\n"
+
+	echo "请选择需要执行的命令，按回车键执行所有任务："
+	echo "1.清除Docker所有容器及镜像"
+	echo "2.将BD文件夹移动至BD_OLD并重新获取"
+	
+	read -p "请选择:" task	
+	case $task in
+    '')
+      cleanDockerContainer
+	  regainPrismCode
+      ;;	  
+	1)
+	  cleanDockerContainer
+	  ;;
+	2)
+	  regainPrismCode
+	  ;;
+	esac
+}
+
+#删除所有docker容器及镜像
+cleanDockerContainer() {
+  docker stop $(docker ps -a -q)
+  docker rm $(docker ps -a -q)
+  docker rmi $(docker images -q)
+  docker volume prune
+   
+  echo -e "完成\n"
+}
+
+#将BD文件夹移动至BD_OLD并重新获取
+regainPrismCode() {
+  cd ~ 
+  cd Code
+  mv "BD" "BD_OLD"
+  
+  mkdir BD
+  
+  
+  echo -e "完成\n"
+}
+
+menu
